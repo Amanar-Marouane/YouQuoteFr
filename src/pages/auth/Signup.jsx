@@ -30,8 +30,17 @@ const Signup = () => {
                 return;
             };
 
-            const res = await response.json();
-            console.log(res);
+            document.querySelectorAll('.error').forEach(error => {
+                error.textContent = '';
+            });
+
+            if (response.status === 422) {
+                const res = await response.json();
+                Object.keys(res.errors).forEach(field => {
+                    const errorElement = document.querySelector(`.${field}-error`);
+                    errorElement.textContent = res.errors[field][0];
+                });
+            }
         } catch (error) {
             console.log(error);
         }
