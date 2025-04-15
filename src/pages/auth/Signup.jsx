@@ -2,9 +2,12 @@ import Input from "../../components/Input"
 import GuestLayout from "../../layouts/GuestLayout"
 import SubmitButton from "../../components/SubmitButton"
 import { Link, useNavigate } from 'react-router-dom'
+import { Context } from '../../context/UserContext'
+import { useContext } from "react"
 
 const Signup = () => {
     const navigate = useNavigate();
+    const { setIsIn } = useContext(Context);
     const HOST = import.meta.env.VITE_HOST_BASE;
 
     const SubmitHandle = async (e) => {
@@ -21,8 +24,9 @@ const Signup = () => {
                 body: formData,
             });
 
-            if (response.status === 201 && response.status === 403) {
-                navigate('/profile');
+            if (response.status === 201 || response.status === 403) {
+                setIsIn(true);
+                navigate('/home');
                 return;
             };
 
