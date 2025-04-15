@@ -2,9 +2,13 @@ import React from 'react'
 import Input from "../../components/Input"
 import GuestLayout from "../../layouts/GuestLayout"
 import SubmitButton from "../../components/SubmitButton"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
+    const navigate = useNavigate();
+    const HOST = import.meta.env.VITE_HOST_BASE;
+
+
     return (
         <GuestLayout>
             <section className="flex justify-center items-center flex-col w-full max-w-md mx-auto space-y-8 p-6 h-full">
