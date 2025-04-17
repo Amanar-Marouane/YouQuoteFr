@@ -1,3 +1,4 @@
+import Button from "./Button";
 import LogoutBtn from "./LogoutBtn";
 
 const Header = () => {
@@ -9,7 +10,8 @@ const Header = () => {
                     <div className="flex-shrink-0">
                         <h1 className="text-2xl font-bold text-gray-800">YouQuote</h1>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-4">
+                        <Button label={'New Quote'} to={'/quote/add'} />
                         <LogoutBtn />
                     </div>
                 </div>
