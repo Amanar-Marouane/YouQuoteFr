@@ -8,9 +8,11 @@ const Index = () => {
     const { user } = useContext(Context);
     const [quotes, setQuotes] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredQuotes, setFilteredQuotes] = useState(null);
+    const [searchColumn, setSearchColumn] = useState("author");
+    const [searchResults, setSearchResults] = useState(null);
     const [randomQuote, setRandomQuote] = useState(null);
     const [popularQuotes, setPopularQuotes] = useState(null);
+    const [isSearching, setIsSearching] = useState(false);
 
     const fetchRandomQuote = async () => {
         try {
@@ -43,13 +45,34 @@ const Index = () => {
             });
             const res = await response.json();
             setQuotes(res.data);
-            setFilteredQuotes(res.data);
+            setSearchResults(res.data);
             console.log(res.data);
 
         } catch (error) {
             console.log(error);
         }
     }
+
+    const handleSearch = async (value) => {
+        if (!value.trim()) {
+            setSearchResults(quotes);
+            return;
+        }
+
+        setIsSearching(true);
+        try {
+            const response = await fetch(`${HOST}/quote/${searchColumn}/${value}`, {
+                credentials: 'include',
+            });
+            const res = await response.json();
+            setSearchResults(res.data);
+        } catch (error) {
+            console.log(error);
+            setSearchResults([]);
+        } finally {
+            setIsSearching(false);
+        }
+    };
 
     useEffect(() => {
         Index();
@@ -58,20 +81,12 @@ const Index = () => {
     }, []);
 
     useEffect(() => {
-        if (quotes) {
-            const filtered = quotes.filter(quote =>
-                quote.quote.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                quote.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                quote.categories.some(category =>
-                    category.toLowerCase().includes(searchTerm.toLowerCase())
-                ) ||
-                quote.tags.some(tag =>
-                    tag.toLowerCase().includes(searchTerm.toLowerCase())
-                )
-            );
-            setFilteredQuotes(filtered);
-        }
-    }, [searchTerm, quotes]);
+        const debounceTimer = setTimeout(() => {
+            handleSearch(searchTerm);
+        }, 500);
+
+        return () => clearTimeout(debounceTimer);
+    }, [searchTerm, searchColumn]);
 
     return (
         <AppLayout>
@@ -120,24 +135,34 @@ const Index = () => {
                     </div>
 
                     <div className="mb-8">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="Search quotes, authors, categories, or tags..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                🔍
-                            </span>
+                        <div className="flex gap-4">
+                            <select
+                                value={searchColumn}
+                                onChange={(e) => setSearchColumn(e.target.value)}
+                                className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="quote">Quote</option>
+                                <option value="author">Author</option>
+                            </select>
+                            <div className="relative flex-1">
+                                <input
+                                    type="text"
+                                    placeholder={`Search by ${searchColumn}...`}
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    {isSearching ? '⌛' : '🔍'}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredQuotes ? (
-                            filteredQuotes.length > 0 ? (
-                                filteredQuotes.map((quote) => (
+                        {searchResults ? (
+                            searchResults.length > 0 ? (
+                                searchResults.map((quote) => (
                                     <QuoteCard key={quote.id} quote={quote} />
                                 ))
                             ) : (
