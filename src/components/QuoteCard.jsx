@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
+    const navigate = useNavigate();
     const HOST = import.meta.env.VITE_HOST_BASE;
     const [likes, setLikes] = useState(quote.likes);
     const [favorites, setFavorites] = useState(quote.favorites);
     const [isLiked, setIsLiked] = useState(quote.isLiked);
     const [isFavorited, setIsFavorited] = useState(quote.isFavorited);
 
-    const handleLike = async () => {
+    const handleLike = async (e) => {
+        e.stopPropagation();
         try {
             const response = await fetch(`${HOST}/quote/like/${quote.id}`, {
                 method: 'POST',
@@ -30,7 +33,8 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
         }
     };
 
-    const handleFavorite = async () => {
+    const handleFavorite = async (e) => {
+        e.stopPropagation();
         try {
             const response = await fetch(`${HOST}/quote/favorite/${quote.id}`, {
                 method: 'POST',
@@ -53,6 +57,20 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
         }
     };
 
+    const handleCardClick = () => {
+        navigate(`/quote/${quote.id}`);
+    };
+
+    const handleEdit = (e) => {
+        e.stopPropagation();
+        onEdit(quote);
+    };
+
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        onDelete(quote.id);
+    };
+
     const isUrl = (string) => {
         try {
             new URL(string);
@@ -70,6 +88,7 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 hover:underline break-all"
+                    onClick={(e) => e.stopPropagation()}
                 >
                     {value}
                 </a>
@@ -79,7 +98,10 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition-shadow h-full flex flex-col">
+        <div
+            className="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition-shadow h-full flex flex-col cursor-pointer"
+            onClick={handleCardClick}
+        >
             <div className="mb-4 flex-grow">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2 break-words">{quote.quote}</h3>
                 <p className="text-gray-600 italic break-words">- {quote.author}</p>
@@ -143,13 +165,13 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
                     {showActions && (
                         <div className="flex gap-2 ml-4">
                             <button
-                                onClick={() => onEdit(quote)}
+                                onClick={handleEdit}
                                 className="text-blue-600 hover:text-blue-800 transition-colors"
                             >
                                 ✏️
                             </button>
                             <button
-                                onClick={() => onDelete(quote.id)}
+                                onClick={handleDelete}
                                 className="text-red-600 hover:text-red-800 transition-colors"
                             >
                                 🗑️

@@ -11,6 +11,7 @@ const Header = () => {
                         <h1 className="text-2xl font-bold text-gray-800">YouQuote</h1>
                     </div>
                     <div className="flex items-center gap-4">
+                        <Button label={'Home'} to={'/home'} />
                         <Button label={'New Quote'} to={'/quote/add'} />
                         <Button label={'Profile'} to={'/profile'} />
                         <LogoutBtn />

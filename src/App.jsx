@@ -7,6 +7,7 @@ import UserContext from './context/UserContext'
 import Store from './pages/quotes/Store'
 import Error404 from './components/errors/Error404'
 import UsersIndex from './pages/users/Index'
+import Show from './pages/quotes/Show'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path='/home' element={<QuotesIndex />} />
           <Route path='/profile' element={<UsersIndex />} />
           <Route path='/quote/add' element={<Store />} />
+          <Route path='/quote/:id' element={<Show />} />
           <Route path='*' element={<Error404 backTo={'/home'} />} />
         </Routes>
       </UserContext>
