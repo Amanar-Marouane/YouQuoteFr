@@ -1,27 +1,56 @@
 import React, { useState } from 'react';
 
 const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
+    const HOST = import.meta.env.VITE_HOST_BASE;
     const [likes, setLikes] = useState(quote.likes);
     const [favorites, setFavorites] = useState(quote.favorites);
     const [isLiked, setIsLiked] = useState(quote.isLiked);
     const [isFavorited, setIsFavorited] = useState(quote.isFavorited);
 
-    const handleLike = () => {
-        if (isLiked) {
-            setLikes(prev => prev - 1);
-        } else {
-            setLikes(prev => prev + 1);
+    const handleLike = async () => {
+        try {
+            const response = await fetch(`${HOST}/quote/like/${quote.id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                if (isLiked) {
+                    setLikes(prev => prev - 1);
+                } else {
+                    setLikes(prev => prev + 1);
+                }
+                setIsLiked(!isLiked);
+            }
+        } catch (error) {
+            console.error('Error liking quote:', error);
         }
-        setIsLiked(!isLiked);
     };
 
-    const handleFavorite = () => {
-        if (isFavorited) {
-            setFavorites(prev => prev - 1);
-        } else {
-            setFavorites(prev => prev + 1);
+    const handleFavorite = async () => {
+        try {
+            const response = await fetch(`${HOST}/quote/favorite/${quote.id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                if (isFavorited) {
+                    setFavorites(prev => prev - 1);
+                } else {
+                    setFavorites(prev => prev + 1);
+                }
+                setIsFavorited(!isFavorited);
+            }
+        } catch (error) {
+            console.error('Error favoriting quote:', error);
         }
-        setIsFavorited(!isFavorited);
     };
 
     const isUrl = (string) => {
