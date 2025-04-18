@@ -12,6 +12,7 @@ const Header = () => {
                     </div>
                     <div className="flex items-center gap-4">
                         <Button label={'New Quote'} to={'/quote/add'} />
+                        <Button label={'Profile'} to={'/profile'} />
                         <LogoutBtn />
                     </div>
                 </div>

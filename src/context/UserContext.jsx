@@ -18,8 +18,6 @@ const UserContext = ({ children }) => {
             const res = await response.json();
 
             setUser(res.data.user);
-            console.log(res.data.user);
-
             setIsIn(res.data.authenticated);
             setLoading(false);
         } catch (error) {

@@ -1,11 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import { Context } from "../../context/UserContext";
+import { useEffect, useState } from "react";
 import UserLayout from "../../layouts/UserLayout";
 import QuoteCard from "../../components/QuoteCard";
 
 const Index = () => {
     const HOST = import.meta.env.VITE_HOST_BASE;
-    const { user } = useContext(Context);
     const [quotes, setQuotes] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchColumn, setSearchColumn] = useState("author");
@@ -89,16 +87,8 @@ const Index = () => {
     return (
         <UserLayout>
             <section className="min-h-screen bg-gray-100 py-8">
-                <div className="container mx-auto px-4">
-                    <div className="bg-white p-8 rounded-lg shadow-md max-w-xl w-full mb-8">
-                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">User Information</h2>
-                        <div className="text-gray-600 space-y-2">
-                            <p><strong>Name:</strong> {user ? user.name : 'Loading ...'}</p>
-                            <p><strong>Email:</strong> {user ? user.email : 'Loading ...'}</p>
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-8 rounded-lg shadow-md mb-8">
+                <div className="container mx-auto px-4 flex justify-center flex-col items-center">
+                    <div className="bg-white p-8 rounded-lg shadow-md mb-8 w-fit">
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Make Your Day with a Random Quote</h2>
                         <div className="grid grid-cols-1 gap-6">
                             {randomQuote ? (

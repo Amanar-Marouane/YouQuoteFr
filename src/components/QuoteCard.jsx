@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const QuoteCard = ({ quote }) => {
+const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
     const [likes, setLikes] = useState(quote.likes);
     const [favorites, setFavorites] = useState(quote.favorites);
     const [isLiked, setIsLiked] = useState(quote.isLiked);
@@ -107,8 +107,26 @@ const QuoteCard = ({ quote }) => {
                         <span>{quote.frequency}</span>
                     </span>
                 </div>
-                <div className="text-xs whitespace-nowrap">
-                    {new Date(quote.created_at).toLocaleDateString()}
+                <div className="flex items-center gap-2">
+                    <div className="text-xs whitespace-nowrap">
+                        {new Date(quote.created_at).toLocaleDateString()}
+                    </div>
+                    {showActions && (
+                        <div className="flex gap-2 ml-4">
+                            <button
+                                onClick={() => onEdit(quote)}
+                                className="text-blue-600 hover:text-blue-800 transition-colors"
+                            >
+                                ✏️
+                            </button>
+                            <button
+                                onClick={() => onDelete(quote.id)}
+                                className="text-red-600 hover:text-red-800 transition-colors"
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
