@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
+const QuoteCard = ({ quote, onDelete, onEdit, showActions = false, onUpdate }) => {
     const navigate = useNavigate();
     const HOST = import.meta.env.VITE_HOST_BASE;
     const [likes, setLikes] = useState(quote.likes);
@@ -27,6 +27,10 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
                     setLikes(prev => prev + 1);
                 }
                 setIsLiked(!isLiked);
+
+                if (onUpdate) {
+                    onUpdate();
+                }
             }
         } catch (error) {
             console.error('Error liking quote:', error);
@@ -51,6 +55,10 @@ const QuoteCard = ({ quote, onDelete, onEdit, showActions = false }) => {
                     setFavorites(prev => prev + 1);
                 }
                 setIsFavorited(!isFavorited);
+
+                if (onUpdate) {
+                    onUpdate();
+                }
             }
         } catch (error) {
             console.error('Error favoriting quote:', error);
