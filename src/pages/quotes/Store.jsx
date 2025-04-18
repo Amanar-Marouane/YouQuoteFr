@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import AppLayout from "../../layouts/AppLayout"
+import UserLayout from "../../layouts/UserLayout"
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton";
 import Input from "../../components/Input";
@@ -125,8 +125,8 @@ const Store = () => {
     }
 
     return (
-        <AppLayout>
-            <section className="max-w-4xl w-full">
+        <UserLayout>
+            <section className="min-h-screen bg-gray-100 py-8">
                 <h1 className="text-3xl font-bold text-gray-800 mb-8">Publish A Quote</h1>
 
                 <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
@@ -259,7 +259,7 @@ const Store = () => {
                     </div>
                 </form>
             </section>
-        </AppLayout>
+        </UserLayout>
     )
 }
 

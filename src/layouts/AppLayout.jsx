@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer'
-import Header from '../components/Header'
 import { useContext, useEffect } from 'react';
 import { Context } from '../context/UserContext';
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children, Header }) => {
     const navigate = useNavigate();
     const { isIn } = useContext(Context);
 
