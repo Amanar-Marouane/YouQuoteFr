@@ -9,16 +9,16 @@ import Store from './pages/quotes/Store'
 function App() {
 
   return (
-    <UserContext>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserContext>
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
           <Route path='/home' element={<Index />} />
           <Route path='/quote/add' element={<Store />} />
         </Routes>
-      </BrowserRouter>
-    </UserContext>
+      </UserContext>
+    </BrowserRouter >
   )
 }
 

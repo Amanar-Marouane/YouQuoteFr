@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../../context/UserContext";
-import AppLayout from "../../layouts/AppLayout";
+import UserLayout from "../../layouts/UserLayout";
 import QuoteCard from "../../components/QuoteCard";
 
 const Index = () => {
@@ -46,8 +46,6 @@ const Index = () => {
             const res = await response.json();
             setQuotes(res.data);
             setSearchResults(res.data);
-            console.log(res.data);
-
         } catch (error) {
             console.log(error);
         }
@@ -89,7 +87,7 @@ const Index = () => {
     }, [searchTerm, searchColumn]);
 
     return (
-        <AppLayout>
+        <UserLayout>
             <section className="min-h-screen bg-gray-100 py-8">
                 <div className="container mx-auto px-4">
                     <div className="bg-white p-8 rounded-lg shadow-md max-w-xl w-full mb-8">
@@ -178,7 +176,7 @@ const Index = () => {
                     </div>
                 </div>
             </section>
-        </AppLayout>
+        </UserLayout>
     );
 };
 
