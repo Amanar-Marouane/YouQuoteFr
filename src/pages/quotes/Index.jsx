@@ -2,6 +2,20 @@ import { useEffect, useState } from "react";
 import UserLayout from "../../layouts/UserLayout";
 import QuoteCard from "../../components/QuoteCard";
 
+const NoQuotes = ({ message = "There are no quotes available at the moment. Please try again later or check your search criteria." }) => (
+    <div className="col-span-full text-center py-12">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">No Quotes Found</h3>
+            <p className="mt-1 text-sm text-gray-500">
+                {message}
+            </p>
+        </div>
+    </div>
+);
+
 const Index = () => {
     const HOST = import.meta.env.VITE_HOST_BASE;
     const [quotes, setQuotes] = useState(null);
@@ -156,7 +170,7 @@ const Index = () => {
 
     return (
         <UserLayout>
-            <section className="min-h-screen bg-gray-100 py-8">
+            <section className="min-h-screen bg-gray-100 py-8 pb-0">
                 <div className="container mx-auto px-4 flex justify-center flex-col items-center">
                     <div className="bg-white p-8 rounded-lg shadow-md mb-8 w-fit">
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Make Your Day with a Random Quote</h2>
@@ -164,9 +178,7 @@ const Index = () => {
                             {randomQuote ? (
                                 <QuoteCard quote={randomQuote} />
                             ) : (
-                                <div className="text-center text-gray-500">
-                                    Loading random quote...
-                                </div>
+                                <NoQuotes message="Unable to fetch a random quote at the moment. Please try again later." />
                             )}
                         </div>
                     </div>
@@ -180,9 +192,7 @@ const Index = () => {
                                         <QuoteCard key={quote.id} quote={quote} />
                                     ))
                                 ) : (
-                                    <div className="col-span-full text-center text-gray-500">
-                                        No popular quotes available.
-                                    </div>
+                                    <NoQuotes message="No popular quotes available at the moment." />
                                 )
                             ) : (
                                 <div className="col-span-full text-center text-gray-500">
@@ -260,9 +270,7 @@ const Index = () => {
                                     <QuoteCard key={quote.id} quote={quote} />
                                 ))
                             ) : (
-                                <div className="col-span-full text-center text-gray-500">
-                                    No quotes found matching your search.
-                                </div>
+                                <NoQuotes message="No quotes found matching your search criteria. Try adjusting your filters or search terms." />
                             )
                         ) : (
                             <div className="col-span-full text-center text-gray-500">

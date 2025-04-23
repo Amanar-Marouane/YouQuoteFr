@@ -5,11 +5,18 @@ import { Context } from '../context/UserContext';
 
 const AppLayout = ({ children, Header }) => {
     const navigate = useNavigate();
-    const { isIn } = useContext(Context);
+    const { isIn, userIsRole } = useContext(Context);
 
     useEffect(() => {
-        if (!isIn) navigate('/login');
-    }, [isIn]);
+        if (!isIn) {
+            navigate('/login');
+            return;
+        }
+
+        if (userIsRole('admin') && !window.location.pathname.startsWith('/dashboard')) {
+            navigate('/dashboard');
+        }
+    }, [isIn, userIsRole]);
 
     return (
         <>

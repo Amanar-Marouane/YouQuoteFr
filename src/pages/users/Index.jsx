@@ -5,11 +5,12 @@ import QuoteCard from "../../components/QuoteCard";
 import Input from "../../components/Input";
 import SubmitButton from "../../components/SubmitButton";
 import TagsInput from "../../components/TagsInput";
-
+import AdminQuoteCard from "../../components/AdminQuoteCard";
 const Index = () => {
     const HOST = import.meta.env.VITE_HOST_BASE;
     const { user } = useContext(Context);
     const [quotes, setQuotes] = useState(null);
+    const [pendingQuotes, setPendingQuotes] = useState(null);
     const [editingQuote, setEditingQuote] = useState(null);
     const [types, setTypes] = useState(null);
     const [categories, setCategories] = useState(null);
@@ -38,6 +39,21 @@ const Index = () => {
             });
             const res = await response.json();
             setQuotes(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const fetchPendingQuotes = async () => {
+        try {
+            const response = await fetch(`${HOST}/quote/me/pending`, {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+            const res = await response.json();
+            setPendingQuotes(res.data);
         } catch (error) {
             console.log(error);
         }
@@ -169,6 +185,7 @@ const Index = () => {
 
     useEffect(() => {
         Request();
+        fetchPendingQuotes();
         fetchTypes();
         fetchCategories();
     }, [])
@@ -340,6 +357,43 @@ const Index = () => {
                             </form>
                         </div>
                     )}
+
+                    <div className="bg-white p-8 rounded-lg shadow-md mb-8">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Pending Quotes</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {pendingQuotes ? (
+                                pendingQuotes.length > 0 ? (
+                                    pendingQuotes.map((quote) => (
+                                        <div key={quote.id} className="border rounded-lg p-4 bg-white shadow-md flex flex-col justify-between items-center gap-4">
+                                            <AdminQuoteCard quote={quote} />
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(quote)}
+                                                    className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(quote.id)}
+                                                    className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="col-span-full text-center text-gray-500">
+                                        You don't have any pending quotes.
+                                    </div>
+                                )
+                            ) : (
+                                <div className="col-span-full text-center text-gray-500">
+                                    Loading your pending quotes...
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     <div className="bg-white p-8 rounded-lg shadow-md">
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">My Quotes</h2>

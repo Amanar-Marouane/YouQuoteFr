@@ -9,10 +9,10 @@ const UserLayout = ({ children }) => {
 
     useEffect(() => {
         setAccess(userIsRole('User'));
-    }, [user]);
+    }, [userIsRole, user]);
 
     if (!access) {
-        return <Error404 backTo={'/'} />
+        return <Error404 backTo={'/dashboard'} />
     }
 
     return (

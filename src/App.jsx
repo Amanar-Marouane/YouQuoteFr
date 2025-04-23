@@ -10,6 +10,9 @@ import UsersIndex from './pages/users/Index'
 import Show from './pages/quotes/Show'
 import Favorites from './pages/quotes/Favorites'
 import Likes from './pages/quotes/Likes'
+import Dashboard from './pages/admin/Dashboard'
+import QuotesManagement from './pages/admin/QuotesManagement'
+import QuoteEdit from './pages/admin/QuoteEdit'
 
 function App() {
 
@@ -25,6 +28,9 @@ function App() {
           <Route path='/quote/:id' element={<Show />} />
           <Route path='/quote/favorites' element={<Favorites />} />
           <Route path='/quote/likes' element={<Likes />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/dashboard/quotes' element={<QuotesManagement />} />
+          <Route path='/quote/:id/edit' element={<QuoteEdit />} />
           <Route path='*' element={<Error404 backTo={'/home'} />} />
         </Routes>
       </UserContext>

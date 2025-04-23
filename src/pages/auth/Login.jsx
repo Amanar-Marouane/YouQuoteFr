@@ -7,7 +7,7 @@ import { Context } from '../../context/UserContext'
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setIsIn } = useContext(Context);
+    const { setIsIn, userIsRole } = useContext(Context);
     const HOST = import.meta.env.VITE_HOST_BASE;
 
     const SubmitHandle = async (e) => {
@@ -24,11 +24,15 @@ const Login = () => {
                 },
                 body: formData,
             });
+            const res = await response.json();
 
             if (response.status === 200 || response.status === 403) {
                 setIsIn(true);
-                navigate('/home');
-                return;
+                if (userIsRole('admin')) {
+                    navigate('/dashboard');
+                } else {
+                    navigate('/home');
+                }
             }
 
             document.querySelectorAll('.error').forEach(error => {
@@ -36,7 +40,6 @@ const Login = () => {
             });
 
             if (response.status === 422) {
-                const res = await response.json();
                 Object.keys(res.errors).forEach(field => {
                     const errorElement = document.querySelector(`.${field}-error`);
                     errorElement.textContent = res.errors[field][0];

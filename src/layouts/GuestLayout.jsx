@@ -2,13 +2,20 @@ import { useContext, useEffect } from 'react'
 import Footer from '../components/Footer'
 import { Context } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
+
 const GuestLayout = ({ children }) => {
     const navigate = useNavigate();
-    const { isIn } = useContext(Context);
+    const { isIn, userIsRole } = useContext(Context);
 
     useEffect(() => {
-        if (isIn) navigate('/home');
-    }, [isIn]);
+        if (isIn) {
+            if (userIsRole('admin')) {
+                navigate('/dashboard');
+            } else {
+                navigate('/home');
+            }
+        }
+    }, [isIn, userIsRole]);
 
     return (
         <>
@@ -17,7 +24,6 @@ const GuestLayout = ({ children }) => {
             </main>
             <Footer />
         </>
-
     )
 }
 
